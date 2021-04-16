@@ -1,0 +1,225 @@
+<html>
+
+<head>
+    <title>SSE Coding Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var strArr = [];
+
+        function isPalindrome(str) {
+            var ctr = str.length;
+            var strArr = str.split("");
+            var midChar = Math.round(strArr.length / 2);
+
+            if (ctr <= 1) return false;
+
+            for (var i = 0; i < ctr; i++) {
+                if (strArr[i] != strArr[ctr - 1 - i]) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        function getLongestPalidromeString(str) {
+            var newStr = "";
+            var checkStr = false;
+
+            for (var i = 0; i < str.length; i++) {
+                newStr = str.substr(i, str.length);
+                checkStr = isPalindrome(newStr);
+
+                if (checkStr) {
+                    break;
+                }
+            }
+
+            return newStr;
+        }
+
+        function getPalidromeList(str) {
+            var setInitialValue = false;
+
+            for (var i = 0; i < str.length; i++) {
+                var strChar = str.substring(i, 0);
+
+                if (strChar.length > 0) {
+                    var checkStr = isPalindrome(strChar);
+
+                    if (checkStr) {
+                        var cutStr = str.split(strChar);
+
+                        if (cutStr.length > 0) {
+                            if (cutStr[0].length > 0) strArr.push(cutStr[0]);
+                            strArr.push(strChar);
+
+                            if (cutStr[1].length > 1) {
+                                getPalidromeList(cutStr[1]);
+                            }
+                            else {
+                                strArr.push(cutStr[1]);
+                            }
+                        }
+
+                        setInitialValue = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!setInitialValue) {
+                strArr.push(str.substring(1, 0));
+
+                getPalidromeList(str.substring(str.length, 1));
+            }
+
+            return strArr;
+        }
+
+        $(document).ready(function () {
+            $(document).on("click", ".test-1-button", function () {
+                var str = $(".test-1-input").val();
+
+                if (str.length > 0) {
+                    var checkStr = isPalindrome(str);
+
+                    $(".test-1-result").text((checkStr ? "true // it's written the same forward and backward" : "false"));
+                }
+                else {
+                    $(".test-1-input").focus();
+                }
+
+            });
+
+            $(document).on("click", ".test-2-button", function () {
+                var str = $(".test-2-input").val();
+                var longestString = "";
+                var newLongStr = "";
+                var newStrRev = "";
+
+                if (str.length > 0) {
+                    for (var i = 0; i < str.length; i++) {
+                        newLongStr = getLongestPalidromeString(str.substring(str.length - i, 0));
+
+                        if (newLongStr.length > longestString.length) {
+                            longestString = newLongStr;
+                        }
+                    }
+
+                    $(".test-2-result").text(longestString);
+                }
+                else {
+                    $(".test-2-input").focus();
+                }
+            });
+
+            $(document).on("click", ".test-3-button", function () {
+                var str = $(".test-3-input").val();
+                var cutCount = 0;
+                var strCutArr = [];
+                strArr = [];
+
+                if (str.length > 0) {
+                    strCutArr = getPalidromeList(str);
+                    var printedResult = "";
+
+                    for ( var i = 0; i < strCutArr.length; i++ )
+                    {
+                        cutCount = i;
+                        printedResult += ( i == 0 ? " " : " | " ) + strCutArr[i];
+                    }
+
+                    $(".test-3-result").text(cutCount + " // " + printedResult);
+                }
+                else {
+                    $(".test-3-input").focus();
+                }
+            });
+        });
+    </script>
+    <style>
+        * {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .container {
+            margin: auto;
+            width: 80%;
+            min-width: 300px;
+        }
+        .level {
+            width: 27%;
+            padding: 10px 20px;
+            margin: 0;
+            border: 1px solid black;
+            min-width: 300px;
+            float: left;
+        }
+
+        .level .section-title {
+            margin-top: 0;
+        }
+
+        .test-input {
+            margin-bottom: 10px;
+        }
+
+        input[type=text] {
+            margin: auto;
+            width: 90%;
+            padding: 15px 22px;
+            margin: 10px 5px;
+            box-sizing: border-box;  
+        }
+
+        input[type=button] {
+            width: 90%;
+            background-color: #8842d5;
+            border: none;
+            color: white;
+            padding: 18px 36px;
+            text-decoration: none;
+            margin: 5px 4px;
+            cursor: pointer; 
+        }
+
+        .test-1-result, .test-2-result, .test-3-result {
+            min-height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Zigzag Gengo SSE Coding Test : Fun with Palindromes</h2>
+        <div class="level">
+            <h3 class="section-title">Level 1</h3>
+            <input type="text" class="test-1-input test-input" value="" placeholder="Enter a string">
+            </br>
+            <input type="button" class="test-1-button" value="Check">
+            <p>Result:</p>
+            <p class="test-1-result"></p>
+        </div>
+
+        <div class="level">
+            <h3 class="section-title">Level 2</h3>
+            <input type="text" class="test-2-input test-input" value="" placeholder="Enter a string">
+            </br>
+            <input type="button" class="test-2-button" value="Check">
+            <p>Result:</p>
+            <p class="test-2-result"></p>
+        </div>
+
+        <div class="level">
+            <h3 class="section-title">Level 3</h3>
+            <input type="text" class="test-3-input test-input" value="" placeholder="Enter a string">
+            </br>
+            <input type="button" class="test-3-button" value="Check">
+            <p>Result:</p>
+            <p class="test-3-result"></p>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -8,6 +8,9 @@
     <!-- Initialize the Javascript and jQuery functions here -->
     <script>
         var strArr = []; // container for the array result that will be displayed for L3
+        var sdatetime = new Date(); // initialize variables to check to process time in milliseconds
+        var starttime;
+        var endtime;
 
         // This function serves as a checker if the passed string value is a palindrome or not
         function isPalindrome(str) {
@@ -66,7 +69,7 @@
 
                     // if a palindrome word is found, save the value inside the array
                     if (checkStr) {
-                        var cutStr = str.split(strChar); // cut the string based on the palindrome word found
+                        var cutStr = splitAt(str, strChar); // cut the string based on the palindrome word found
 
                         // add validation for checking if it has a valid character length
                         if (cutStr.length > 0) {
@@ -101,10 +104,40 @@
             return strArr;
         }
 
+        function splitAt(str, splitStr) {
+            if (! str) return [];
+            if (! splitStr) return [];
+
+            var i = str.indexOf(splitStr);
+
+            if (i >= 0) {
+                return [str.substring(0, i), str.substring(i + splitStr.length)];
+            }
+            else {
+                return [str];
+            }
+        }
+
+        function setTimeStart() {
+            var datetime = new Date();
+            starttime = datetime.getTime();
+        }
+
+        function setTimeCompleted() {
+            var datetime = new Date();
+            endtime = datetime.getTime();
+        }
+
+        function getTotalTime() {
+            return (endtime-starttime)/1000;
+        }
+
         // initialize jquery event calls
         $(document).ready(function () {
             // event function for Test 1
             $(document).on("click", ".test-1-button", function () {
+                setTimeStart();
+                $(".test-1-time-comp").html("Loading please wait!...");
                 var str = $(".test-1-input").val(); // get input value
 
                 // check if character length is valid
@@ -117,10 +150,14 @@
                     // if there is no character to be checked, refocus the pointer to the input text 
                     $(".test-1-input").focus();
                 }
+
+                setTimeCompleted();
+                $(".test-1-time-comp").html(getTotalTime()); // display total time processed
             });
 
             // event function for Test 2
             $(document).on("click", ".test-2-button", function () {
+                setTimeStart();
                 var str = $(".test-2-input").val(); // get input value
                 var longestString = "";
                 var newLongStr = "";
@@ -143,10 +180,14 @@
                     // if there is no character to be checked, refocus the pointer to the input text 
                     $(".test-2-input").focus();
                 }
+
+                setTimeCompleted();
+                $(".test-2-time-comp").html(getTotalTime()); // display total time processed
             });
 
             // event function for Test 3
             $(document).on("click", ".test-3-button", function () {
+                setTimeStart();
                 var str = $(".test-3-input").val(); // get input value
                 var cutCount = 0;
                 var strCutArr = [];
@@ -169,6 +210,9 @@
                     // if there is no character to be checked, refocus the pointer to the input text 
                     $(".test-3-input").focus();
                 }
+
+                setTimeCompleted();
+                $(".test-3-time-comp").html(getTotalTime()); // display total time processed
             });
         });
     </script>
@@ -234,7 +278,7 @@
             <input type="text" class="test-1-input test-input" value="" placeholder="Enter a string">
             </br>
             <input type="button" class="test-1-button" value="Check">
-            <p>Result:</p>
+            <p>Result: <span class="test-1-time-comp"></span></p>
             <p class="test-1-result"></p>
         </div>
         <!-- Level 2 Solution -->
@@ -243,7 +287,7 @@
             <input type="text" class="test-2-input test-input" value="" placeholder="Enter a string">
             </br>
             <input type="button" class="test-2-button" value="Check">
-            <p>Result:</p>
+            <p>Result: <span class="test-2-time-comp"></span></p>
             <p class="test-2-result"></p>
         </div>
         <!-- Level 3 Solution -->
@@ -252,7 +296,7 @@
             <input type="text" class="test-3-input test-input" value="" placeholder="Enter a string">
             </br>
             <input type="button" class="test-3-button" value="Check">
-            <p>Result:</p>
+            <p>Result: <span class="test-3-time-comp"></span></p>
             <p class="test-3-result"></p>
         </div>
     </div>

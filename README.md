@@ -1,3 +1,17 @@
+Testing Guide
+There are 2 ways to run the program.
+
+1. Clone the repository and run the index.html file and preview this on a browser.
+2. Download the zip file and run the index file on the local computer.
+
+Executing this will view the interface of the program. The sections for Levels 1,2 and 3 are on display and the user can input the necessary keywords or values into the input box that has the placeholder "Enter a string". Then by clickin the purple button or the "Check" button the user will be able to see the result.
+
+=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- 
+
+The program is made using HTML, Javascript, jQuery and CSS.
+
+=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- 
+
 # Zigzag-Gengo-SSE-Coding-Test
 SSE Coding Test
 

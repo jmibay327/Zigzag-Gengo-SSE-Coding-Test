@@ -10,6 +10,8 @@ Executing this will view the interface of the program. The sections for Levels 1
 
 The program is made using HTML, Javascript, jQuery and CSS.
 
+For the Space Complexity, since the code runs on a web page, the memory consumption is limited and will base on the current browser has for consumption
+
 =-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- 
 
 # Zigzag-Gengo-SSE-Coding-Test

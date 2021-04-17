@@ -1,138 +1,172 @@
 <html>
 
 <head>
+    <!-- Define Title of the Web Page here -->
     <title>SSE Coding Test</title>
+    <!-- Initialize the jQuery source code here -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Initialize the Javascript and jQuery functions here -->
     <script>
-        var strArr = [];
+        var strArr = []; // container for the array result that will be displayed for L3
 
+        // This function serves as a checker if the passed string value is a palindrome or not
         function isPalindrome(str) {
+            // to check if the string is a palindrome or not, the idea is that when the string reverted will always have the same value
             var ctr = str.length;
             var strArr = str.split("");
             var midChar = Math.round(strArr.length / 2);
 
+            // only proceed if the string length is greater than 1
             if (ctr <= 1) return false;
 
+            // initialize a loop that will check the characters of a string
+            // to easily check, compare the first and last string value
+            // then during the loop increment the fist and decrement the last value
+            // if during the loop and the value is not equal, the string is not a palindrome
             for (var i = 0; i < ctr; i++) {
                 if (strArr[i] != strArr[ctr - 1 - i]) {
                     return false;
                 }
             }
 
+            // return true means the string is a palindrome
             return true;
         }
 
+        // this function enables the user to check for the longest palindrome value in the string
         function getLongestPalidromeString(str) {
             var newStr = "";
             var checkStr = false;
 
+            // initialize a loop to run through the characters based from the users input
             for (var i = 0; i < str.length; i++) {
-                newStr = str.substr(i, str.length);
-                checkStr = isPalindrome(newStr);
+                newStr = str.substr(i, str.length); // use substr function to thoroughly check the string
+                checkStr = isPalindrome(newStr); // use the previous function to check if the string is a palindrome or not
 
+                // if a palidrome was found, break the loop for checking
                 if (checkStr) {
-                    break;
+                    break; // exit looop
                 }
             }
 
+            // return the last word found that was identified as a palindrome
             return newStr;
         }
 
+        // this function is to set and return an array of detected and not detected characters/words that are found to be a palindorme
         function getPalidromeList(str) {
-            var setInitialValue = false;
+            var setInitialValue = false; // set an initial value checker, that will check if the loop has found a palindrome string
 
             for (var i = 0; i < str.length; i++) {
-                var strChar = str.substring(i, 0);
+                var strChar = str.substring(i, 0); // loop trough all the characters in the string, start from the first letter
 
+                // condition to check if the character count can be checked
                 if (strChar.length > 0) {
-                    var checkStr = isPalindrome(strChar);
+                    var checkStr = isPalindrome(strChar); // check if the string is a palindrome
 
+                    // if a palindrome word is found, save the value inside the array
                     if (checkStr) {
-                        var cutStr = str.split(strChar);
+                        var cutStr = str.split(strChar); // cut the string based on the palindrome word found
 
+                        // add validation for checking if it has a valid character length
                         if (cutStr.length > 0) {
+                            // if there is a initial character found, save
                             if (cutStr[0].length > 0) strArr.push(cutStr[0]);
-                            strArr.push(strChar);
+                            strArr.push(strChar); // save the found palindrome word inside the array
 
+                            // check if last split string index, still has a character to validate
                             if (cutStr[1].length > 1) {
-                                getPalidromeList(cutStr[1]);
+                                getPalidromeList(cutStr[1]); // call the function for saving another palindrome character/word in the array to be displayed
                             }
                             else {
-                                strArr.push(cutStr[1]);
+                                strArr.push(cutStr[1]); // save the value inside the array if there is only 1 character left 
                             }
                         }
 
-                        setInitialValue = true;
-                        break;
+                        setInitialValue = true; // set identifier that a palindrome string has been found
+                        break; // exit loop
                     }
                 }
             }
 
+            // if the value, cant be evaluated after the loop, reduce the size of the string by removing the first character in the string
+            // then pass the rest of the value to be evaluated on the function
             if (!setInitialValue) {
-                strArr.push(str.substring(1, 0));
+                strArr.push(str.substring(1, 0)); // save the first character inside the array
 
-                getPalidromeList(str.substring(str.length, 1));
+                getPalidromeList(str.substring(str.length, 1)); // call the function for saving another palindrome character/word in the array to be displayed 
             }
 
+            // return the saved array value
             return strArr;
         }
 
+        // initialize jquery event calls
         $(document).ready(function () {
+            // event function for Test 1
             $(document).on("click", ".test-1-button", function () {
-                var str = $(".test-1-input").val();
+                var str = $(".test-1-input").val(); // get input value
 
+                // check if character length is valid
                 if (str.length > 0) {
-                    var checkStr = isPalindrome(str);
+                    var checkStr = isPalindrome(str); // check is the input value is a palindrome
 
-                    $(".test-1-result").text((checkStr ? "true // it's written the same forward and backward" : "false"));
+                    $(".test-1-result").text((checkStr ? "true // it's written the same forward and backward" : "false")); // display result in the defined class
                 }
                 else {
+                    // if there is no character to be checked, refocus the pointer to the input text 
                     $(".test-1-input").focus();
                 }
-
             });
 
+            // event function for Test 2
             $(document).on("click", ".test-2-button", function () {
-                var str = $(".test-2-input").val();
+                var str = $(".test-2-input").val(); // get input value
                 var longestString = "";
                 var newLongStr = "";
-                var newStrRev = "";
 
                 if (str.length > 0) {
+                    // initialize a loop to check the palindrome string in the input value
                     for (var i = 0; i < str.length; i++) {
-                        newLongStr = getLongestPalidromeString(str.substring(str.length - i, 0));
+                        // set new string to be checked for a palindrome string
+                        newLongStr = getLongestPalidromeString(str.substring(str.length - i, 0)); // get the longest palindrome string, by using the redefined substring 
 
+                        // check if the length of the new palindrome string is longer than the previous string
                         if (newLongStr.length > longestString.length) {
-                            longestString = newLongStr;
+                            longestString = newLongStr; // set new longest palindrome string
                         }
                     }
 
-                    $(".test-2-result").text(longestString);
+                    $(".test-2-result").text(longestString); // display result in the defined class
                 }
                 else {
+                    // if there is no character to be checked, refocus the pointer to the input text 
                     $(".test-2-input").focus();
                 }
             });
 
+            // event function for Test 3
             $(document).on("click", ".test-3-button", function () {
-                var str = $(".test-3-input").val();
+                var str = $(".test-3-input").val(); // get input value
                 var cutCount = 0;
                 var strCutArr = [];
-                strArr = [];
+                strArr = []; // reset saved array value
 
                 if (str.length > 0) {
-                    strCutArr = getPalidromeList(str);
+                    strCutArr = getPalidromeList(str); // call function to set the available palidrome based on the input string
                     var printedResult = "";
 
+                    // loop the array saved
                     for ( var i = 0; i < strCutArr.length; i++ )
                     {
-                        cutCount = i;
-                        printedResult += ( i == 0 ? " " : " | " ) + strCutArr[i];
+                        cutCount = i; // by using the array index, set the cut count
+                        printedResult += ( i == 0 ? " " : " | " ) + strCutArr[i]; // compose string to be displayed
                     }
 
-                    $(".test-3-result").text(cutCount + " // " + printedResult);
+                    $(".test-3-result").text(cutCount + " // " + printedResult); // display result in the defined class
                 }
                 else {
+                    // if there is no character to be checked, refocus the pointer to the input text 
                     $(".test-3-input").focus();
                 }
             });
@@ -192,7 +226,9 @@
 
 <body>
     <div class="container">
+        <!-- title -->
         <h2>Zigzag Gengo SSE Coding Test : Fun with Palindromes</h2>
+        <!-- Level 1 Solution -->
         <div class="level">
             <h3 class="section-title">Level 1</h3>
             <input type="text" class="test-1-input test-input" value="" placeholder="Enter a string">
@@ -201,7 +237,7 @@
             <p>Result:</p>
             <p class="test-1-result"></p>
         </div>
-
+        <!-- Level 2 Solution -->
         <div class="level">
             <h3 class="section-title">Level 2</h3>
             <input type="text" class="test-2-input test-input" value="" placeholder="Enter a string">
@@ -210,7 +246,7 @@
             <p>Result:</p>
             <p class="test-2-result"></p>
         </div>
-
+        <!-- Level 3 Solution -->
         <div class="level">
             <h3 class="section-title">Level 3</h3>
             <input type="text" class="test-3-input test-input" value="" placeholder="Enter a string">
